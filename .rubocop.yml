@@ -1,3 +1,6 @@
+AllCops:
+  Include:
+    - !ruby/regexp /\.rb$/
 Documentation:
   Enabled: false
 Style/FrozenStringLiteralComment:
@@ -6,3 +9,5 @@ Style/Semicolon:
   Enabled: false
 Metrics/LineLength:
   Max: 120
+Metrics/MethodLength:
+  Max: 15

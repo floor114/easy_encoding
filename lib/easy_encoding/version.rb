@@ -1,3 +1,3 @@
 module EasyEncoding
-  VERSION = '0.0.0'.freeze
+  VERSION = '0.0.1.alpha1'.freeze
 end
