@@ -3,7 +3,8 @@
 [![Build Status](https://travis-ci.org/floor114/easy_encoding.svg?branch=master)](https://travis-ci.org/floor114/easy_encoding)
 
 Easy encoding encoding is a tool that allows you to encode and decode data via:
-* Huffman encoding.
+* Huffman encoding;
+* Shannon-Fano encoding.
 
 ## Installation
 
@@ -20,13 +21,13 @@ And then execute:
 Or install it yourself as:
 
     $ gem install easy_encoding
-    
+
 ## Configuration
 You can configure symbol for left and right node of tree.
 ```ruby
 EasyEncoding.configure do |config|
-  config.right_node_symbol = 0
-  config.left_node_symbol = 1
+  config.right_node_symbol = '0'
+  config.left_node_symbol = '1'
 end
 ```
 
@@ -45,6 +46,21 @@ Using with frequencies:
 huffman = EasyEncoding::Huffman.new({ x7: 0.42, x3: 0.28, x5: 0.1, x6: 0.1, x4: 0.05, x2: 0.03, x1: 0.02 })
 huffman.frequencies            #=> {:x7=>0.42, :x3=>0.28, :x6=>0.1, :x5=>0.1, :x4=>0.05, :x2=>0.03, :x1=>0.02}
 huffman.char_codes             #=> {:x7=>"1", :x3=>"01", :x5=>"0000", :x6=>"0001", :x4=>"0011", :x2=>"00100", :x1=>"00101"}
+```
+
+#### Shannon-Fano coding
+
+Using with string:
+```ruby
+shannon_fano = EasyEncoding::ShannonFano.new('Code')
+shannon_fano.frequencies       #=> {"e"=>0.25, "d"=>0.25, "o"=>0.25, "c"=>0.25}
+shannon_fano.char_codes        #=> {"e"=>"11", "d"=>"10", "o"=>"01", "c"=>"00"}
+```
+Using with frequencies:
+```ruby
+shannon_fano = EasyEncoding::ShannonFano.new({ x7: 0.42, x3: 0.28, x5: 0.1, x6: 0.1, x4: 0.05, x2: 0.03, x1: 0.02 })
+shannon_fano.frequencies       #=> {:x7=>0.42, :x3=>0.28, :x5=>0.1, :x6=>0.1, :x4=>0.05, :x2=>0.03, :x1=>0.02}
+shannon_fano.char_codes        #=> {:x7=>"1", :x3=>"01", :x6=>"0011", :x5=>"0010", :x4=>"0001", :x2=>"00001", :x1=>"00000"}
 ```
 
 ## Contributing

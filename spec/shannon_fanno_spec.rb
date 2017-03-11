@@ -1,12 +1,12 @@
 require 'spec_helper'
 
-describe EasyEncoding::Huffman do
+describe EasyEncoding::ShannonFano do
   context 'creating' do
     context 'when argument is ' do
       context 'frequencies' do
         context 'frequencies should be' do
           frequencies = { a: 0.2, b: 0.3, c: 0.5 }
-          coding = EasyEncoding::Huffman.new(frequencies)
+          coding = EasyEncoding::ShannonFano.new(frequencies)
 
           context 'correct' do
             it { expect(coding.frequencies).to eq frequencies }
@@ -19,21 +19,21 @@ describe EasyEncoding::Huffman do
 
         context 'frequencies summ should eq 1' do
           it do
-            expect { EasyEncoding::Huffman.new(a: 0.2, b: 0.3, c: 0.6).frequencies }
+            expect { EasyEncoding::ShannonFano.new(a: 0.2, b: 0.3, c: 0.6).frequencies }
               .to raise_error 'summ of frequencies should eq 1'
           end
         end
 
         context 'argument should be a string or a hash' do
           it do
-            expect { EasyEncoding::Huffman.new(20).frequencies }
+            expect { EasyEncoding::ShannonFano.new(20).frequencies }
               .to raise_error 'you must provide a hash or a string'
           end
         end
       end
 
       context 'string' do
-        coding = EasyEncoding::Huffman.new('test')
+        coding = EasyEncoding::ShannonFano.new('test')
 
         context 'input should be correct' do
           it { expect(coding.input).to eq 'test' }
@@ -48,14 +48,9 @@ describe EasyEncoding::Huffman do
 
   context 'coding' do
     context 'should have' do
-      coding = EasyEncoding::Huffman.new('test')
+      coding = EasyEncoding::ShannonFano.new('test')
       context 'right char codes' do
-        it { expect(coding.char_codes).to eq(t: '1', e: '00', s: '01') }
-      end
-
-      context 'right root node' do
-        it { expect(coding.root.frequency).to eq 1 }
-        it { expect(coding.root.symbol).to eq '' }
+        it { expect(coding.char_codes).to eq(t: '0', s: '10', e: '11') }
       end
     end
   end

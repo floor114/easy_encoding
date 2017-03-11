@@ -1,40 +1,21 @@
 require 'easy_encoding/node'
+require 'easy_encoding/base'
 
 module EasyEncoding
-  class Huffman
-    attr_reader :input, :char_codes, :frequencies, :root
-
-    def initialize(input)
-      case input
-      when Hash
-        raise ArgumentError, 'summ of frequencies should eq 1' if input.values.reduce(:+) > 1
-        @frequencies = input.sort_by { |_, value| value }.reverse.to_h
-      when String
-        @input = input
-        @frequencies = calculate_frequencies(input)
-      else
-        raise ArgumentError, 'you must provide a hash or a string'
-      end
-      @root = create_tree(frequencies)
-      @char_codes = generate_codes(root)
+  class Huffman < Base
+    def root
+      @root ||= create_tree!
     end
 
     private
 
-    def generate_codes(root)
-      {}.tap { |result| root.walk { |node, code| result[node.symbol] = code unless node.merged? } }
+    def generate_codes!
+      {}.tap { |res| root.walk { |node, code| res[node.symbol] = code unless node.merged? } }
         .sort_by { |_, value| value.length }.to_h
     end
 
-    def calculate_frequencies(string)
-      frequencies = Hash.new(0.0)
-      frequencies.tap { |freq| string.each_char { |char| freq[char.to_sym] += 1 } }
-                 .each { |key, value| frequencies[key] = value / string.size }
-                 .sort_by { |_, value| value }.reverse.to_h
-    end
-
-    def create_tree(frequencies)
-      nodes = [].tap { |result| frequencies.each { |sym, freq| result << Node.new(symbol: sym, frequency: freq) } }
+    def create_tree!
+      nodes = [].tap { |res| frequencies.each { |sym, freq| res << Node.new(symbol: sym, frequency: freq) } }
 
       while nodes.size > 1
         nodes.sort!

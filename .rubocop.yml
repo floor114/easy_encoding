@@ -1,6 +1,8 @@
 AllCops:
   Include:
     - !ruby/regexp /\.rb$/
+  Exclude:
+   - 'spec/*'
 Documentation:
   Enabled: false
 Style/FrozenStringLiteralComment:
@@ -10,4 +12,6 @@ Style/Semicolon:
 Metrics/LineLength:
   Max: 120
 Metrics/MethodLength:
-  Max: 15
+  Max: 20
+Metrics/AbcSize:
+  Max: 30

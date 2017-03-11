@@ -9,10 +9,10 @@ module EasyEncoding
 
     def initialize(params)
       @frequency = params.fetch(:frequency, 0)
-      @symbol = params.fetch(:symbol, '')
-      @left = params.fetch(:left, nil)
-      @right = params.fetch(:right, nil)
-      @parent = params.fetch(:parent, nil)
+      @symbol    = params.fetch(:symbol, '')
+      @left      = params[:left]
+      @right     = params[:right]
+      @parent    = params[:parent]
     end
 
     def walk(&block)
@@ -21,13 +21,11 @@ module EasyEncoding
 
     def walk_node(code, &block)
       yield(self, code)
-      left&.walk_node(code + EasyEncoding.configuration.left_node_symbol.to_s, &block)
-      right&.walk_node(code + EasyEncoding.configuration.right_node_symbol.to_s, &block)
+      left&.walk_node(code + EasyEncoding.configuration.left_node_symbol, &block)
+      right&.walk_node(code + EasyEncoding.configuration.right_node_symbol, &block)
     end
 
     def <=>(other)
-      return nil unless other.is_a?(self.class)
-
       frequency <=> other.frequency
     end
 
